@@ -1,0 +1,8 @@
+tqdm
+datetime
+# FYI: DO NOT INSTALL pynvml
+nvidia-ml-py  # this gives the pynvml we need
+pandas
+matplotlib
+numba
+jupyterlab

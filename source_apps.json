@@ -1,0 +1,88 @@
+{
+    "HeCBench": {
+        "source_folder": "HeCBench",
+        "keogh": {
+            "app_folder": "keogh",
+            "app_params":   ["256", "22500000", "100"]
+        },
+        "extrema": {
+            "app_folder": "extrema",
+            "app_params":  ["750"]
+        },
+        "threadfence": {
+            "app_folder": "threadfence",
+            "app_params":  ["100", "250000000"]
+        },
+        "marchingCubes": {
+            "app_folder": "marchingCubes",
+            "app_params": ["100"]
+        },
+        "murmurhash3": {
+            "app_folder": "murmurhash3",
+            "app_params": ["750000", "500"]
+        },
+        "jaccard": {
+            "app_folder": "jaccard",
+            "app_params": ["1024", "512", "1000"]
+        },
+        "floydwarshall": {
+            "app_folder": "floydwarshall",
+            "app_params": ["2048", "100", "256"]
+        },
+        "chacha20": {
+            "app_folder": "chacha20",
+            "app_params": ["300000"]
+        },
+        "stu-matrix-rotate": {
+            "app_folder": "stu-matrix-rotate",
+            "app_params": ["30000", "100"]
+        },
+        "all-pairs-distance": {
+            "app_folder": "all-pairs-distance",
+            "app_params": ["10000"]
+        },
+        "jacobi": {
+            "app_folder": "jacobi",
+            "app_params": [""]
+        },
+        "layout": {
+            "app_folder": "layout",
+            "app_params": ["2500"]
+        },
+        "segment-reduce": {
+             "app_folder": "segment-reduce",
+            "app_params": ["16384", "100"]
+        },
+        "dense-embedding": {
+            "app_folder": "dense-embedding",
+            "app_params": ["100000", "128", "100"]
+        },
+        "pathfinder": {
+            "app_folder": "pathfinder",
+            "app_params": ["100000", "10000", "2500"]
+        },
+        "bsearch": {
+            "app_folder": "bsearch",
+            "app_params": ["8388608", "1000"]
+        },
+        "entropy": {
+            "app_folder": "entropy",
+            "app_params": ["8192", "8192", "500"]
+        },
+        "colorwheel": {
+            "app_folder": "colorwheel",
+            "app_params": ["10000", "256", "500000"]
+        },
+        "randomAccess": {
+            "app_folder": "randomAccess",
+            "app_params": ["10", "1"]
+        },
+        "lid-driven-cavity": {
+            "app_folder": "lid-driven-cavity",
+            "app_params": [""]
+        }
+    },
+    "Altis": {
+        "xxx":"xxx"
+    }
+}
