@@ -27,11 +27,13 @@ You are also provided with a separate folder, ```lassi_solutions```, to see how 
 
 Become familiar with the folloing reference documents to better inform your approach to refactoring paralle code to consume less energy.
 
-1. C++ programming Guide by NVIDIA: [PDF](resources/NVIDIA_CUDA_Cpp_Programming_Guide_v12-8.pdf) or online at 
+1. C++ programming Guide by NVIDIA:
+[PDF](resources/NVIDIA_CUDA_Cpp_Programming_Guide_v12-8.pdf) or online at 
 https://docs.nvidia.com/cuda/cuda-c-programming-guide/
 
 
-2. CUDA C++ Best Practices Guide by NVIDIA: [PDF](resources/NVIDIA_CUDA_Cpp_Best_Practices_Guide_v12-8.pdf) or online at 
+2. CUDA C++ Best Practices Guide by NVIDIA:
+[PDF](resources/NVIDIA_CUDA_Cpp_Best_Practices_Guide_v12-8.pdf) or online at 
 https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/
 
 
@@ -49,7 +51,7 @@ All registered participants of the Code Green Jam have been given access to the 
 
 ## Step 1: Remote in to Detla GPU
 
-Follow Steps 5 and 6 in the [*Code Green Jame - Getting Started Guide*](resources/Code_Green_Setup_Instructions.pdf) to log in to the Detla GPU cluster and initiate a Jupyter Lab notebook.
+Follow Steps 5 and 6 in the [*Code Green Jam - Getting Started Guide*](resources/Code_Green_Setup_Instructions.pdf) to log in to the Detla GPU cluster and initiate a Jupyter Lab notebook.
 
 NOTE: When starting your Jupyter Lab instance, please select the following partition: ```gpuA40x4-interactive```
 
