@@ -1,0 +1,21 @@
+----- LASSI RESPONSE: code comparison -----
+
+Several key changes were made in the refactored version that can help reduce energy consumption by lowering overall runtime (and thus energy use) and by reducing unnecessary host–device overhead. The most notable differences are:
+
+1. Pinned Host Memory:
+   • In the refactored code, memory for arrays that are exchanged with the GPU (namely, data_char and gpu_distance) is allocated using cudaMallocHost instead of malloc. 
+   • This “pinned” (page-locked) memory allows faster and more efficient GPU–host transfers, thereby reducing transfer overhead and total execution time.
+
+2. Direct Device Memory Initialization:
+   • Whereas the source code used bzero on the host followed by cudaMemcpy to zero out the device’s distance array, the refactored version uses cudaMemset directly on the device memory.
+   • This eliminates an extra memory copy and reduces CPU intervention and overall runtime.
+
+3. Reduction Kernel (k2) Improvement:
+   • The refactored version of kernel k2 now performs the reduction on shared memory using a balanced tree reduction loop.
+   • Compared to the sequential accumulation loop in the source, this balanced reduction is more efficient (fewer synchronization points and better parallel utilization), which helps decrease execution time and energy consumption.
+
+4. Reduced Data Transfers:
+   • After looping over iterations for each kernel, the refactored code performs the final cudaMemcpy (to get the result back from the device) only once per kernel rather than inside the iteration loop.
+   • Less frequent host–device transfers cut down on data transfer overhead, contributing to lower energy usage.
+
+Together, these changes shorten the overall execution duration and lower the number of memory transfers and synchronizations, leading to improved energy efficiency while maintaining the same functionality.

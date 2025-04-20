@@ -1,0 +1,21 @@
+----- LASSI RESPONSE: code comparison -----
+
+Below is a summary of the key changes in the REFACTORED CODE that contribute to its improved energy efficiency compared to the SOURCE CODE:
+
+Memory Allocation and Data Transfer:
++ Instead of using standard aligned_alloc for host memory, the refactored code uses cudaHostAlloc to allocate pinned (page‐locked) memory. Pinned memory improves PCIe transfer performance, reducing the time (and therefore energy) spent on data transfers.
++ Host–device transfers are performed asynchronously with cudaMemcpyAsync (in combination with a dedicated CUDA stream) rather than the blocking cudaMemcpy. Asynchronous transfers allow overlapping of data transfers and kernel execution, cutting overall execution time and reducing idle power consumption.
+
+Use of CUDA Streams:
++ The creation and use of a dedicated CUDA stream allows overlapping of memory copies with computation. This improves GPU utilization and reduces the duration the GPU is active, which in turn helps lower the total energy consumed.
+
+Kernel Launch Consolidation:
++ The refactored code launches the kernel only once rather than launching it repeatedly in a loop. Within the kernel, a new internal loop “for (int r = 0; r < eff_rot; r++)” is used to perform the required number of rotations (determined from the constant d_repeat). This significantly reduces the kernel launch overhead and minimizes CPU–GPU synchronization events—both of which contribute to lower overall energy and power consumption.
+
+Use of Constant Memory:
++ The repeat value is copied to the device’s constant memory (d_repeat) using cudaMemcpyToSymbol. Accessing constant memory is faster for values that do not change during kernel execution, reducing costly memory reads and thereby improving energy efficiency.
+
+Minor Code Optimizations:
++ The kernel pointer is declared with the restrict qualifier, which helps the compiler generate more efficient memory access code by enabling better optimizations. This contributes to improved performance and energy efficiency during the kernel’s execution.
+
+By reducing data movement overhead (through pinned memory and asynchronous transfers), cutting down on kernel launch overhead (by consolidating rotation iterations into a single kernel), and optimizing memory access (via constant memory and restrict), the refactored version achieves a notably lower average kernel execution time and cuts both total energy consumption and average power considerably.

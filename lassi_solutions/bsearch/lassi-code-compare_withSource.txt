@@ -1,0 +1,31 @@
+----- LASSI RESPONSE: code comparison -----
+
+Below is a summary highlighting the key changes in the refactored code that relate to improved energy efficiency:
+
+• Read‐Only Memory Access:
+ – The refactored version adds use of the __ldg intrinsic when reading from global memory (for example, in fetching acc_z and acc_a values).
+ – This promotes utilization of the read-only data cache, reducing memory traffic and energy usage per access.
+
+• Kernel Unification and Consolidation:
+ – The similar binary search logic from BS2, BS3, and BS4 is consolidated into a common device function (bs_generic_logic).
+ – This reduces code redundancy and simplifies kernel logic, which can lead to a smaller instruction footprint and improved power efficiency.
+
+• Boundary Checking in Kernels:
+ – Each kernel now checks if the thread index is within zSize before proceeding.
+ – This avoids unnecessary computations and potential memory accesses from threads operating out-of-bound, thereby reducing wasted energy.
+
+• Precomputation and Caching:
+ – The initial k value (init_k) is computed once on the host (using computeInitK) and cached globally.
+ – Precomputing such values reduces redundant computation within the kernels and saves energy.
+
+• Reuse of CUDA Streams and Events:
+ – A persistent stream is created and reused for all kernel launches via a helper launchKernel function.
+ – Additionally, CUDA events for timing are reused rather than recreated on every launch.
+ – This reduces overhead from stream and event management, lowering both CPU and GPU power consumption.
+
+• Optimized Host Memory Allocation and Transfers:
+ – Instead of posix_memalign, the refactored code uses cudaHostAlloc to allocate pinned (page-locked) host memory.
+ – Pinned memory improves the efficiency of memory transfers between host and device, thereby reducing energy per data transfer.
+ – Asynchronous memory copies using a dedicated stream are used, allowing better overlap and efficiency during data transfer.
+
+Each of these changes is aimed at reducing redundant operations, lowering memory access energy costs, and cutting down overhead from kernel launches and data transfers. Together, these modifications contribute to the observed reduction in total energy consumption and average power usage while preserving the original functionality and correctness of the computation.

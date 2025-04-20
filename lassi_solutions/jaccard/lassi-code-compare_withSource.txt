@@ -1,0 +1,25 @@
+----- LASSI RESPONSE: code comparison -----
+
+Below are the key changes from the SOURCE CODE that were likely made to improve energy efficiency in the REFACTORED CODE:
+
+Fused Initialization Kernel:
+ • Instead of calling the original fill kernel twice (once for initializing d_weight_j and again for d_weight_i), the refactored version introduces a new fused_fill kernel.
+  • By combining the two memory initialization tasks into one kernel launch, the refactored code reduces kernel launch overhead and minimizes the total number of global memory writes. This helps lower power consumption during execution.
+
+Precomputation of Kernel Launch Configurations:
+ • In the refactored version, the kernel configuration parameters (grid and block dimensions) for fused_fill, jaccard_row_sum, jaccard_is, and jaccard_jw are computed before entering the iteration loop.
+  • This move avoids recalculating these parameters in every iteration, reducing per-iteration overhead and lowering CPU and GPU workload, which can lead to improved energy efficiency.
+
+Optimized Intersection Computation in jaccard_is:
+ • The original jaccard_is kernel used a binary search for each element when computing intersections; in the refactored code this has been replaced by a two-pointer merge approach.
+  • Additionally, only one thread per “work‐item” (guarded by if (threadIdx.x == 0)) carries out the intersect merge and then does a single atomic update. This reduces both thread divergence and the number of atomic operations, thus likely decreasing unnecessary computations and memory accesses.
+
+Streamlining of Atomic and Memory Operations:
+ • In the refactored jaccard_is kernel, accumulating the intersection sum is done in a local variable (local_sum) and then updated atomically only once per j index.
+  • This consolidation minimizes the frequency of atomicAdd calls, saving on energy by reducing memory contention and overhead associated with atomic operations.
+
+General Code Cleanup:
+ • Minor changes in formatting and variable naming (such as clearer comments and consistent spacing) make it easier to understand how data is shared or reused.
+  • The overall reorganizing of work—such as precomputing kernel configurations and fusing operations—reduces redundant work per iteration, lowering the average power draw and total energy consumed.
+  
+In summary, by fusing kernels to cut launch overhead, precomputing configurations, using a more efficient two-pointer merge in place of binary search, and consolidating atomic operations, the refactored code minimizes both CPU and GPU overhead. These changes directly contribute to the measured reduction in energy consumption and average power usage while preserving the original functionality.

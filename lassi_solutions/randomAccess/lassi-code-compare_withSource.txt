@@ -1,0 +1,27 @@
+----- LASSI RESPONSE: code comparison -----
+
+Some key changes in the refactored code that may lead to improved energy efficiency include:
+
+1. Precomputation and use of constant memory:  
+   • The original HPCC_starts() computed the m2 lookup table locally on every call.  
+   • The refactored code precomputes the m2 array on the host and copies it into the GPU’s constant memory (d_m2).  
+   • Using constant memory reduces redundant computations and leverages the more efficient constant memory caches, which can lower power usage.
+
+2. Change of update kernel configuration:  
+   • The SOURCE CODE used a single kernel launch with one block of 128 threads.  
+   • The refactored code increases occupancy by launching the update kernel with multiple blocks (UPDATE_NUM_BLOCKS = 32 and UPDATE_THREADS_PER_BLOCK = 256, yielding a total of 8192 update threads).  
+   • Higher occupancy and more balanced work distribution can reduce idle GPU cycles and thus reduce overall energy consumption.
+
+3. Reduction of global memory traffic:  
+   • In the original update kernel, each thread stored its final random number back to global memory (via the d_ran array).  
+   • The refactored version eliminates writing back the random seed to global memory, cutting down on unnecessary memory accesses that contribute to energy usage.
+   • Additionally, the d_ran allocation is removed altogether, reducing both allocation overhead and memory pressure.
+
+4. Use of pinned (page-locked) host memory:  
+   • The refactored code allocates the host table using cudaHostAlloc instead of posix_memalign.  
+   • Pinned memory can boost data transfer efficiency between the host and device, reducing transfer time and power consumption.
+
+5. Simplification of seed adjustments:  
+   • The refactored HPCC_starts() removes the unnecessary adjustments for negative or overly large seeds, thus simplifying the computation and potentially reducing runtime and energy usage.
+
+Overall, these modifications not only help reduce energy consumption (as evidenced by the lower total energy and faster kernel execution in the results) but also improve the computational efficiency and resource utilization during execution.

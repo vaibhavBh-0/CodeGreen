@@ -1,0 +1,8 @@
+----- LASSI RESPONSE: code comparison -----
+
+
+• The refactored version avoids repeatedly transferring the matrix from host memory to device memory for each iteration. Instead of using cudaMemcpy with cudaMemcpyHostToDevice every time, it copies the initial (unchanged) matrix once to a dedicated device buffer (origPathDistanceBuffer) and then uses a fast device-to-device cudaMemcpy to “reset” the working matrix (pathDistanceBuffer) each iteration. This reduces both CPU and GPU energy usage by minimizing host–device traffic.
+
+• By reducing the number of host-device memory transfers (which are relatively expensive in terms of energy and time), the refactored code lowers CPU involvement and potential GPU idle time waiting for data, which improves overall energy efficiency.
+
+• Other than that, the kernel, the CPU reference function, and most of the algorithm remain unchanged. The main functional difference is the use of a persistent device-side copy of the original data and exploiting a cheaper device-to-device copy in the main loop.

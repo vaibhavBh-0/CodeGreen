@@ -1,0 +1,34 @@
+----- LASSI RESPONSE: code comparison -----
+
+Below is a summary of the changes made in the refactored code that contribute to better energy efficiency. (Note that we do not repeat entire code listings, but we highlight the modifications and why they help reduce energy consumption.)
+
+2D Thread/Block Configuration for Compute Kernels
+ • In the original version, kernels such as calculate_F and calculate_G used one-dimensional grid/block configurations. In the refactored code these kernels are now launched with a two‐dimensional block (e.g. BLOCK_DIM = 16) and matching grid configuration.
+ • Why it matters: A 2D configuration improves occupancy and load balancing, reducing idle threads and unnecessary computations. Better occupancy can lower latency and reduce overall execution time (and therefore, energy consumption).
+
+Boundary Checks Inside Kernels
+ • In calculate_F and calculate_G, the refactored code includes an early “if (row > NUM || col > NUM) return;” check.
+ • Why it matters: This avoids wasted work by out‑of‑bound threads, reducing unnecessary power usage.
+
+Warp-Level Reduction in Reduction Kernels
+ • The sum_pressure kernel was reworked to use warp-level primitives (via __shfl_down_sync) in order to do reductions more efficiently.
+ • Why it matters: Reducing the number of explicit synchronizations and shared memory usage decreases computational overhead and thus energy usage per kernel call.
+
+New Device-Side Reduction Kernel (final_reduce)
+ • A new reduction kernel (“final_reduce”) is introduced to perform the final summation entirely on the GPU.
+ • Why it matters: Offloading the reduction entirely to the device minimizes host–device data transfers and reduces overall synchronization overhead, cutting energy and time costs.
+
+Asynchronous Memory Transfers with Pinned Memory
+ • Instead of using blocking cudaMemcpy calls, the refactored code uses cudaHostAlloc (for pinned memory) along with cudaMemcpyAsync and stream synchronization.
+ • Why it matters: Asynchronously overlapping data transfers with kernel execution reduces idle CPU time and the number of full synchronizations. This results in more efficient usage of both CPU and GPU resources, lowering overall energy consumption.
+
+Batching SOR Iterations Between Synchronizations
+ • The refactored code now “batches” several SOR iterations together (using a batch_interval parameter) before checking the residual error.
+ • Why it matters: Reducing how frequently the kernels synchronize and the host transfers data decreases the frequency of expensive synchronization and memory copy operations, which in turn saves energy.
+
+General Code Restructuring and Efficient Synchronizations
+ • The refactored version removes or comments out many of the previously frequent cudaDeviceSynchronize() calls and instead uses streams to control synchronization only when necessary.
+ • Why it matters: This reduces idle waiting time on the GPU and CPU (by avoiding unnecessary device–host round-trips), leading to lower energy usage.
+
+In summary, the refactored code improves energy efficiency mainly by:  – Optimizing the kernel launch configuration to improve occupancy,  – Using warp-level and device-side reduction techniques to reduce synchronization overhead,  – Shifting from synchronous to asynchronous data transfers with pinned memory to better hide latency, and  – Batching iterations to lower the frequency of disruptive synchronizations.
+As a result, the refactored code runs in nearly half the iteration loop time (7.01 s versus 13.72 s) and consumes considerably less total energy (531.22 J versus 860.71 J) while still delivering the same functionality and solution output.

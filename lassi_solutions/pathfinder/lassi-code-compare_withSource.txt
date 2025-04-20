@@ -1,0 +1,30 @@
+----- LASSI RESPONSE: code comparison -----
+
+Below is a summary of the key changes in the REFACTORED CODE that are likely responsible for the improved energy efficiency:
+
+Use of Pinned (Page‐Locked) Memory:
+ • In the refactored version, data arrays (data, result, and outputBuffer) are allocated with cudaMallocHost instead of the regular new/malloc.
+ • This change accelerates host–device transfers (and enables asynchronous copies), reducing waiting time and thereby lowering overall energy consumption.
+
+Asynchronous Memory Transfers and CUDA Streams:
+ • The refactored code creates a CUDA stream (via cudaStreamCreate) and uses cudaMemcpyAsync to copy data to and from the GPU.
+ • By overlapping data transfers with kernel execution (and synchronizing only when necessary), it reduces idle periods for both the GPU and CPU, which contributes to lower power usage.
+
+Adjusted Grid and Block Configuration: • The block size is changed from 250 (in the SOURCE CODE) to 256 in the REFACTORED CODE—a multiple of the warp size (32).
+ • Also, grid dimensions are computed using ceiling division ((size + lws – 1) / lws) to fully cover the data.
+ • These changes improve hardware utilization and help avoid underutilization of GPU threads, which is beneficial for power and energy efficiency.
+
+Precomputation of Invariant Values:
+ • In the refactored kernel, a base index (baseIndex = cols * t) is computed once outside the inner loop, rather than recomputing it each iteration.
+ • Eliminating redundant arithmetic operations reduces the computational load on each thread, which can lower energy consumption.
+
+Loop Restructuring and Reduced Synchronization:
+ • The refactored code splits the loop into two parts—the first loop runs for iteration–1 steps with shared memory updates and the final iteration is handled separately.
+ • This restructuring may reduce the number of __syncthreads calls and the amount of redundant computation and synchronization, thus saving power.
+
+Early Initialization and Clean-up:
+ • The outputBuffer is cleared via memset right after being allocated, ensuring that memory is in a known state.
+ • The proper creation and destruction of the CUDA stream (with stream synchronization and cudaStreamDestroy) helps in managing asynchronous operations efficiently.
+
+In summary, these changes—notably the use of pinned memory, asynchronous data transfers with streams, adjusting thread configurations, and code-level optimizations inside the kernel—collectively contribute to faster execution and lower energy consumption and average power, while preserving the original functionality of the application.
+

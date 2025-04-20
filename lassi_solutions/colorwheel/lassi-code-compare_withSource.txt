@@ -1,0 +1,25 @@
+----- LASSI RESPONSE: code comparison -----
+
+Below are the major differences introduced in the REFACTORED CODE that contribute to its improved energy efficiency:
+
+1. Use of Constant Memory for the Color Wheel:
+   • In the refactored version, the pre‐computed color wheel is stored in a __constant__ memory array (named constantCW).
+   • Instead of rebuilding the color wheel in every device thread, the kernel now accesses this constant array via the function computeColorShared. Constant memory is cached on the GPU and has lower latency than reading from global memory, reducing both execution time and energy usage.
+
+2. Adoption of Fast Math Intrinsics:
+   • The refactored code replaces the standard sqrtf() with the intrinsic __fsqrt_rn() in computeColorShared.
+   • Fast math intrinsics typically consume less power and execute faster, contributing to the shorter kernel execution time and lower energy consumption.
+
+3. Precomputation of Reciprocal Constant:
+   • A helper function inv255() is introduced to return 1.0f/255.0f.
+   • Although simple, using this inline function avoids redundant division operations, which can reduce computational overhead and energy usage, especially within the per-thread inner loop.
+
+4. Use of Pinned (Page-Locked) Host Memory:
+   • Instead of using malloc() for the host image buffers, the refactored code employs cudaHostAlloc() to allocate pinned memory.
+   • Pinned memory improves the host‐device data transfer speed, reducing the time the GPU (and the system) spends waiting on data transfers. This contributes to lower overall energy consumption during execution.
+
+5. Code Organization for Better Data Locality:
+   • By precomputing and transferring the color wheel once (from hostCW to constantCW), the device kernel no longer repeats the color wheel generation.
+   • This change minimizes redundant computation and memory bandwidth use, which lowers the switching activity and thus saves energy.
+
+Overall, these changes allow the kernel to run about 10 times faster (as seen in the execution time drop from ~0.04 ms to ~0.0045 ms per kernel call) while dramatically reducing total energy consumed and the average power, without altering the program’s functionality or output.

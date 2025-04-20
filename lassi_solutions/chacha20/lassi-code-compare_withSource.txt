@@ -1,0 +1,23 @@
+----- LASSI RESPONSE: code comparison -----
+
+Below is a summary of the key changes in the REFACTORED CODE that are likely to have reduced energy consumption and average power:
+
+• Precomputation on Host and Data Reuse:
+ – In the refactored version, the expensive hex-to-raw conversion is done once on the host via a helper (hex_to_raw_host) before launching the kernels.
+ – The preconverted raw values for the key, nonce, and keystream are then copied to device memory and reused. This avoids repeating the conversion work inside every kernel launch, reducing GPU computation and memory traffic.
+
+• Use of Constant Memory for Lookup Table:
+ – The lookup table (char_to_uint) is copied into CUDA constant memory (d_const_char_to_uint). Constant memory is cached and optimized for broadcast, which can reduce power consumption when many threads access the same data.
+
+• Elimination of Redundant Parameters and Computation:
+ – Because the raw values for key and nonce are precomputed on the host, the device-side hex-to-raw function is effectively sidelined. In addition, the now-unused parameter for the lookup table (char_to_uint) is no longer used in the kernel.
+ – This reduces redundant work on the GPU, contributing to lower power usage.
+
+• Kernel Simplification and Early Buffer Reset:
+ – In the refactored kernel, the result buffer is cleared using a parallel loop that each thread participates in (with __syncthreads() afterward).
+ – By moving work out of the critical kernel path, the kernel becomes leaner and runs faster, decreasing the active execution time and overall energy use.
+
+• Inlined and Unrolled Operations in the ChaCha20 Implementation:
+ – The refactored code uses #pragma unroll and forceinline in parts of the ChaCha20 algorithm. Although these are more about performance, shorter, more efficient execution inherently leads to lower energy consumption because the GPU’s compute units are active for a shorter period.
+
+Overall, by precomputing conversions on the host, leveraging constant memory, and streamlining the kernel to avoid unnecessary repeated work, the refactored code requires fewer GPU cycles and less memory traffic. This results in a reduction in both average power and total energy consumed during runtime (as reflected by the reported timing, energy, and power numbers).

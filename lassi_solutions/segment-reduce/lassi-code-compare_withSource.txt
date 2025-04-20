@@ -1,0 +1,27 @@
+----- LASSI RESPONSE: code comparison -----
+
+Below is a summary of the key changes in the REFACTORED CODE that are likely responsible for its improved energy efficiency:
+
+Use of Pinned Host Memory:
+ • Instead of dynamically allocating host arrays via new, the refactored code allocates host memory using cudaMallocHost.
+ • Pinned (page-locked) memory enables faster (and more energy‐efficient) data transfers between host and device, reducing transfer overhead.
+
+Eliminating Host-Side Key Allocation and Transfer:
+ • The SOURCE CODE explicitly allocates and fills a key array (h_keys) on the host and then copies it to device memory every iteration.
+ • The refactored version removes this extra allocation and instead computes keys on-the-fly using a transform iterator together with a custom functor (KeyFunctor).
+ • This avoids extra memory copy and reduces unnecessary device memory usage, thereby lowering both GPU and CPU energy consumption.
+
+Reuse of Device Memory:
+ • In the SOURCE CODE, output arrays (d_out and d_keys_out) are allocated and freed for each segment size.
+ • The refactored version pre-allocates persistent output buffers (d_out_global and d_keys_out_global) that are reused across iterations.
+ • Minimizing repeated allocations/deallocations reduces overhead and energy usage.
+
+Persistent Stream and CUDA Events for Timing and Asynchronous Operations:
+ • The refactored code creates one persistent CUDA stream and uses CUDA events to time the operations.
+ • It also uses asynchronous memory copies (cudaMemcpyAsync) which can overlap data transfers with computation, enhancing overall system efficiency.
+ • This streamlined flow reduces blocking and overhead, which can lower both the execution time and the power drawn during runtime.
+On-the-fly Computation of Keys Using Bit Shifts:
+ • The KeyFunctor precomputes the shifting factor (log2(segment_size)) and then computes the key by simply shifting the index.
+ • This efficient key computation avoids extra arithmetic operations in a loop on the host side, contributing to reduced CPU work and energy consumption.
+
+In summary, by reducing unnecessary memory allocations, eliminating extra host‐device transfers for keys, using pinned memory and persistent streams/events, and computing keys on-the-fly via a transform iterator, the REFACTORED CODE streamlines operations and reduces overhead. These changes result in reduced overall execution duration and, importantly, lower energy consumption while maintaining the same functionality and output as the SOURCE CODE.

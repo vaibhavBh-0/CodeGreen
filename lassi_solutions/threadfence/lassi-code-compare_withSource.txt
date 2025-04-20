@@ -1,0 +1,24 @@
+----- LASSI RESPONSE: code comparison -----
+
+Below is a summary comparing the key differences introduced in the refactored code that contribute toward improved energy efficiency:
+
+• Reduction Algorithm Change:
+  – In the SOURCE CODE, each thread atomically adds its associated element into a shared running sum. This per‐element atomic operation within each block increases memory traffic and synchronization delays.
+   – The REFACTORED CODE uses a grid‐stride loop so that each thread accumulates its local sum. It then performs a binary tree reduction (first in shared memory across the block and then a warp-level reduction using __shfl_down_sync) to combine these partial sums. This dramatically reduces the number of atomic operations and global memory accesses, lowering both execution time and energy usage.
+
+• Efficient Shared Memory Utilization:
+  – The refactored version uses dynamically allocated shared memory (via extern shared float sdata[]) to store the local partial sums. By doing so, it leverages low-latency shared memory more effectively during the intra‐block reductions.
+   – This change minimizes the reliance on slower global memory, hence reducing energy consumption on memory transactions.
+
+• Reduced Global Memory Traffic:
+  – Instead of writing every partial sum immediately to global memory (as done in the SOURCE CODE), the refactored version aggregates sums in fast shared memory first and only writes the final reduced partial sum per block. This cuts down on the number of global memory writes overall.
+
+• Kernel Launch and Memory Copy Optimization:
+  – In the SOURCE CODE, the input array is copied from host to device on every iteration of the test loop.
+   – In the REFACTORED CODE, the input array is transferred just once before entering the repeated kernel launches. This avoids repeated data transfers over PCIe, which reduces overhead and lowers energy costs on the CPU–GPU interface.
+
+• Improved Runtime Timing:
+  – The SOURCE CODE times kernel execution using CPU-side std::chrono calls with additional cudaDeviceSynchronize() calls.
+   – The REFACTORED CODE uses CUDA events (cudaEventRecord/ElapsedTime) to more accurately and efficiently measure kernel execution time. Using events can reduce synchronization overhead and provide a more energy-efficient approach for profiling.
+  
+Collectively, these changes lead to a drastic reduction in kernel execution time (from roughly 58 ms down to 4 ms) and a significant drop in total energy consumption (from around 605 J down to 55 J). Although the average power reading appears slightly higher, the overall energy efficiency improves because of the much shorter execution time.

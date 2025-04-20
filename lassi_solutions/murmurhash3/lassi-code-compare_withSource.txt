@@ -1,0 +1,21 @@
+----- LASSI RESPONSE: code comparison -----
+
+Below is a summary of the main changes made in the refactored version that are clearly aimed at reducing energy consumption and/or average power usage:
+
+Using CUDA events for timing instead of a busy‐polling host timer
+• The refactored code replaces the std::chrono-based host-side timing with CUDA events. This lets the host sleep while awaiting completion and avoids continuous CPU polling, thereby reducing CPU power consumption.
+
+Consolidating the kernel launch by moving the repeat loop inside the kernel
+• Whereas the original code launched the kernel repeatedly in a loop from the host (thus incurring repeated launch overhead), the refactored version launches the kernel once. It then loops over the hash computation inside each thread using a constant repeat count (stored in device constant memory). This reduces kernel launch overhead and host–device interaction frequency, saving energy.
+
+Use of asynchronous memory transfers with streams and pinned host memory
+• The refactored code allocates host memory with cudaHostAlloc (pinned memory) and uses cudaMemcpyAsync with a CUDA stream. This improves data transfer efficiency by overlapping transfers with computation and reducing waiting time, which can translate to lower energy usage on both the host and the GPU.
+
+Copying the repeat value to constant memory
+• The repeat value is stored in device constant memory (gRepeat) to allow efficient access inside the kernel. Constant memory often uses fewer power cycles compared to repeatedly passing data through registers or shared memory.
+
+Improved grid dimension calculation and resource management
+• Although the grid/block configuration is similar, the code is reorganized to reduce extra overhead. The explicit creation and later destruction of CUDA events and streams further helps manage resources properly.
+
+Overall, these modifications reduce unnecessary CPU activity (by avoiding host busy-waiting), decrease the number of kernel launches and associated overhead, and make data transfers more efficient through the use of pinned memory and asynchronous operations—all of which contribute to the observed reduction in energy consumption and average power usage.
+
