@@ -1,8 +1,8 @@
 ![LASSI](/images/CodeGreen_logo.png)
 
-# Code Green Jam
+# About the Jam
 
-Large energy demands in high-performance computing (HPC) systems have become a major concern in terms of stress on current power infrastructure and environmental impact from carbon emission [Silva et al. 2024](https://doi.org/10.1016/j.rser.2023.114019). For example, current exascale systems require between 24 and 39 MW of power [Top 500](http://www.top500.org/).  Further, the hyperscale tech companies are seeking facilities that can support gigawatts of power, introducing challenges in expanding existing transmission networks [Miller 2024](https://www.datacenterfrontier.com/hyperscale/article/55021675/the-gigawatt-data-center-campus-is-coming).
+Large energy demands in high-performance computing (HPC) systems have become a major concern in terms of stress on current power infrastructure and environmental impact from carbon emission [(Silva et al. 2024)](https://doi.org/10.1016/j.rser.2023.114019). For example, current exascale systems require between 24 and 39 MW of power [(Top 500)](http://www.top500.org/).  Further, the hyperscale tech companies are seeking facilities that can support gigawatts of power, introducing challenges in expanding existing transmission networks [(Miller 2024)](https://www.datacenterfrontier.com/hyperscale/article/55021675/the-gigawatt-data-center-campus-is-coming).
 
 While research in developing more energy efficient *hardware* is critical, there remain ample opportunities to *write performant parallel code* that requires less energy consumption.
 
@@ -27,11 +27,11 @@ You are also provided with a separate folder, ```lassi_solutions```, to see how 
 
 Become familiar with the folloing reference documents to better inform your approach to refactoring paralle code to consume less energy.
 
-1. C++ programming Guide by NVIDIA:
+1. C++ programming Guide by NVIDIA: [PDF](resources/NVIDIA_CUDA_Cpp_Programming_Guide_v12-8.pdf) or online at 
 https://docs.nvidia.com/cuda/cuda-c-programming-guide/
 
 
-2. CUDA C++ Best Practices Guide by NVIDIA:
+2. CUDA C++ Best Practices Guide by NVIDIA: [PDF](resources/NVIDIA_CUDA_Cpp_Best_Practices_Guide_v12-8.pdf) or online at 
 https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/
 
 
@@ -49,13 +49,11 @@ All registered participants of the Code Green Jam have been given access to the 
 
 ## Step 1: Remote in to Detla GPU
 
-Follow Steps 5 and 6 in the [*Code Green Jame - Getting Started Guide*](resources\Code_Green_Setup_Instructions.pdf) to log in to the Detla GPU cluster and initiate a Jupyter Lab notebook.
+Follow Steps 5 and 6 in the [*Code Green Jame - Getting Started Guide*](resources/Code_Green_Setup_Instructions.pdf) to log in to the Detla GPU cluster and initiate a Jupyter Lab notebook.
 
 ## Step 2: Clone the Code Green rep
 
 Recommendation: Open a Terminal from the top directory of your Jupyter instance
-
-**Linux**
 
 Starting in a local directory on your machine where you would like to install LASSI Code Eval:
 
@@ -79,7 +77,7 @@ As a first step, you should execute the cells in the ```lassi_code_powerprofile.
 
 Then, execute the subsequent two cells in the Jupyter notebook. These will compile and execute the source code and the refactored example code. During execution of each code, the power profile will be measured and the energy consumption calculated. The results of these measurements will be presented to you for comparison. The goal is for the refactored code to (1) output the same functional computation as the source code while (2) using less power or consumpting less total energy during the runtime.
 
-## Step 5: Your Turn - Refactor Code for Energy Efficiency
+## Step 5: It's Your Turn! - Refactor Code for Energy Efficiency
 
 Your goal is to start with any one of the source codes provided in the ```test_codes``` folder. Copy the "appname"-cuda_main.cu file as a new file in the *same* folder with a new name of your choice, e.g., "appname"-my_ee_refactor.cu. 
 
