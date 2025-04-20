@@ -1,0 +1,26 @@
+README
+
+1. load CUDA module.
+   You may want to specify the CUDA version for certain applications 
+   after you get more familiar with the system.
+
+ $module load CUDA
+
+or depending on which cluster you're
+
+ $module load cuda
+
+2. compile the CUDA code you are working on. The default output is a.out
+
+ $cd hello_world 
+ $nvcc hello_world_device.cu
+
+3. submit a job to run the CUDA code on a GUP node 
+
+ $sbatch acer_cuda_run.sh
+
+or
+
+ $sbatch ncsa_cuda_run.sh
+
+Good luck!
