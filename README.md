@@ -51,11 +51,13 @@ All registered participants of the Code Green Jam have been given access to the 
 
 Follow Steps 5 and 6 in the [*Code Green Jame - Getting Started Guide*](resources/Code_Green_Setup_Instructions.pdf) to log in to the Detla GPU cluster and initiate a Jupyter Lab notebook.
 
-## Step 2: Clone the Code Green rep
+NOTE: When starting your Jupyter Lab instance, please select the following partition: ```gpuA40x4-interactive```
 
-Recommendation: Open a Terminal from the top directory of your Jupyter instance
+## Step 2: Clone the Code Green repo
 
-Starting in a local directory on your machine where you would like to install LASSI Code Eval:
+Starting at the NCSA's Delta Open OnDemand page where you launched your Jupyter Lab instance, open a separate terminal from the top menu bar options Cluster >> Delta Shell Access.
+
+This will open an interactive terminal in your web browser and bring you to a command line prompt with your username. From here you should clone the Code Green repository:
 
 ```git clone https://github.com/SPEAR-UIC/CodeGreen.git```
 
@@ -63,11 +65,15 @@ Starting in a local directory on your machine where you would like to install LA
 
 ## Step 3: Create a local Python virtual environemt
 
+You should do the following steps in the same terminal in Step 2.
+
 Create a local Python virtual environment, e.g., called ".env":
 
 ```python3 -m venv .env```
 
 ```source .env/bin/activate```
+
+```pip install --upgrade pip```
 
 ```pip install -r requirements.txt```
 
