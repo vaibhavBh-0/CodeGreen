@@ -13,11 +13,12 @@ https://ieeexplore.ieee.org/document/10740822
 M. T. Dearing, Y. Tao, X. Wu, Z. Lan and V. Taylor, "LASSI: An LLM-Based Automated Self-Correcting Pipeline for Translating Parallel Scientific Codes," 2024 IEEE International Conference on Cluster Computing Workshops (CLUSTER Workshops), Kobe, Japan, 2024, pp. 136-143, doi: 10.1109/CLUSTERWorkshops61563.2024.00029.
 
 
-2. CUDA C++ Guide:
+2. C++ programming Guide by NVIDIA:
+https://docs.nvidia.com/cuda/cuda-c-programming-guide/
+
+
+3. CUDA C++ Best Practices Guide by NVIDIA:
 https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/
-
-
-3. C++ programming tips:
 
 
 ## Getting Starting
