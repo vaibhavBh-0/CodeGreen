@@ -36,6 +36,8 @@ https://docs.nvidia.com/cuda/cuda-c-programming-guide/
 [PDF](resources/NVIDIA_CUDA_Cpp_Best_Practices_Guide_v12-8.pdf) or online at 
 https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/
 
+3. Sample CUDA code exercises are avaiable in this repo: ```CodeGreen/resources/CUDA_exercises/```
+
 
 ## Related research: LASSI 
 
