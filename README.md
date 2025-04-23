@@ -16,8 +16,8 @@ For the Code Green Jam, you are provided access during the event to the NCSA's [
 
 ## Test code and Evaluation tools
 
-The power evaluation tools provided is a sub-set of the **LASSI** framework (**L**LM-based **A**utomated
-**S**elf-correcting pipeline for generating parallel **S**c**I**entific codes), a current research project in the [SPEAR Lab at UIC](https://spear.lab.uic.edu/). This project explores how to harness large language models to autonomously generate and refactor existing scientific parallel codes either for translating to an altnerate programming language or to improve energy efficiency--the same goal of the Code Green Jam. The first paper on code tranlsation is linked below and the latest work on energy efficiency was recently submitted for a double-blind review in mid-April 2025, so is not yet available for sharing.
+The power evaluation tools provided is a sub-set of the **LASSI** framework (**L***LM-based* **A***utomated*
+**S***elf-correcting pipeline for generating parallel* **S***c***I***entific codes*), a current research project in the [SPEAR Lab at UIC](https://spear.lab.uic.edu/). This project explores how to harness large language models to autonomously generate and refactor existing scientific parallel codes either for translating to an altnerate programming language or to improve energy efficiency--the same goal of the Code Green Jam. The first paper on code tranlsation is linked below and the latest work on energy efficiency was recently submitted for a double-blind review in mid-April 2025, so is not yet available for sharing.
 
 The test codes provided are the same evaluated in this recent research. These are located in the ```test_codes``` folder of this repo. Each parallel code application is included in a subfolder with its folder name being the same as the application name.
 
@@ -42,8 +42,9 @@ https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/
 
 ## Related research: LASSI 
 
-1. Original LASSI paper:
+Original LASSI paper:
 https://ieeexplore.ieee.org/document/10740822 
+
 M. T. Dearing, Y. Tao, X. Wu, Z. Lan and V. Taylor, "LASSI: An LLM-Based Automated Self-Correcting Pipeline for Translating Parallel Scientific Codes," 2024 IEEE International Conference on Cluster Computing Workshops (CLUSTER Workshops), Kobe, Japan, 2024, pp. 136-143, doi: 10.1109/CLUSTERWorkshops61563.2024.00029.
 
 
@@ -95,7 +96,9 @@ By default, the ```jacobi``` application is included in this cell for you to pra
 
 Then, execute the subsequent two cells in the Jupyter notebook. These will compile and execute the source code and the refactored example code. The source code will compile and execute successfully. If your refactored code does not compile or execute, then you will need to debug your code, save, and try again. 
 
-During execution of each code (the source code and the refactored code), the power profile will be measured and the energy consumption calculated. The results of these measurements will be presented to you for comparison. The goal is for the refactored code to (1) output the same functional computation as the source code while (2) using less power or consumpting less total energy during the runtime.
+During execution of each code (the source code and the refactored code), the power profile will be measured and the energy consumption calculated. The results of these measurements will be presented to you for comparison. 
+
+The goal is for the refactored code to **(1)** output the same functional computation as the source code while **(2)** using less power or consumpting less total energy during the runtime.
 
 ## Step 5: It's Your Turn! - Refactor Code for Energy Efficiency
 
