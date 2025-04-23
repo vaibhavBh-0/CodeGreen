@@ -107,3 +107,5 @@ Your goal is to start with any one of the source codes provided in the ```test_c
 Edit your copy of the code as you see fit to make it more energy efficient. There are many strategies to try to achieve this goal--and you should learn about them starting with the Related Learning Documents below. 
 
 When you are ready to test your code, return to the ```lassi_code_powerprofile.ipynb``` and replace the ```refactorcode_filename``` variable with your refactored code file name. Re-run the cells in the Jupyter notebook to see how your changes worked!
+
+*Side note*: If you plan on doing code dev or testing outside of the provided Jupyter notebook environment and work directly from the terminal, then you will be responsible for being sufficiently familiar and finding your way during the Code Green Jam event. At a minimum, you will need to load the CUDA module with  ```module load cuda``` before compiling code.
